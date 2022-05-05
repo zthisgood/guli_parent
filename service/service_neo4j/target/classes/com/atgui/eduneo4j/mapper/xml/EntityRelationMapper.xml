@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atgui.eduneo4j.mapper.EntityRelationMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.atgui.eduneo4j.entity.EntityRelation">
+        <id column="id" property="id" />
+        <result column="entity1" property="entity1" />
+        <result column="entity2" property="entity2" />
+        <result column="relation_id" property="relationId" />
+        <result column="note" property="note" />
+    </resultMap>
+    <resultMap id="UnionResultMap" type="com.atgui.eduneo4j.entity.RelationShip">
+        <id column="id" property="id" />
+        <result column="entity1" property="entity1" />
+        <result column="entity2" property="entity2" />
+        <result column="relation_id" property="relationId" />
+        <result column="erNote" property="note" />
+        <result column="en_name" property="relationName"/>
+        <result column="chn_name" property="relationChnName"/>
+        <result column="note" property="relationNote"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, entity1, entity2, relation_id, note
+    </sql>
+    <select id="getUnionRelation" resultMap="UnionResultMap">
+        select er.id as id,entity1,entity2,relation_id, er.note as erNote,en_name,chn_name,r.note from entity_relation er,relation r where er.relation_id=r.id and en_name!='none'
+    </select>
+
+    <select id="queryRelationShip" resultMap="UnionResultMap" parameterType="java.lang.String">
+        select er.id as id,entity1,entity2,relation_id, er.note as erNote,en_name,chn_name,r.note
+        from entity_relation er,relation r
+        where er.relation_id=r.id
+        <if test="entity != null and entity != ''">
+            and (entity1=#{entity} or entity2=#{entity})
+        </if>
+        <if test="relationId != null">
+            and r.id=#{relationId};
+        </if>
+    </select>
+
+    <insert id="insertRelationFromRlsp" parameterType="com.atgui.eduneo4j.entity.RelationShip">
+        insert into entity_relation (entity1, entity2, relation_id, note) values
+        (#{entity},#{entity2},#{relationId},#{note})
+    </insert>
+</mapper>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.eduservice.mapper.TaskTestMapper">
+
+    <select id="getWrongTaskTestTitle" resultType="java.util.HashMap">
+        select task_test.id,question title,q.id title_id,q.answer correctAnswer,task_test.answer sAnswer,
+               task_name,teach_name,analysis,knowl,task_test.create_time createTime
+        from task_test inner join task_info on task_info.task_id=task_test.task_id
+                       inner join question q on task_test.title_id=q.id
+        where user_id=#{userId} and task_test.question_answer!=task_test.answer
+    </select>
+
+    <select id="queryStuTaskTest" resultType="com.atguigu.eduservice.entity.vo.TaskTestVO">
+        select distinct test.id id,test.task_id taskId,q.question title,q.choice choices,q.answer correctAnswer,q.type qType,
+               test.answer answer,test.question_fraction titleFraction
+        from task_test test inner join question q on test.title_id = q.id
+            inner join task_user_link tul on tul.question_id=q.id
+        where test.task_id=#{taskId} and test.user_id=#{userId} order by q.type desc
+    </select>
+
+    <select id="getTitleFraction" resultType="com.atguigu.eduservice.entity.TaskTest">
+        select task_test.task_id,task_test.id, task_user_link.question_fraction
+        from task_test left join task_user_link on task_test.task_id=task_user_link.task_id
+        where task_test.id in
+        <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <insert id="insertTaskTest">
+        insert into task_test
+        (task_id, title_id, question_answer,question_fraction, user_id, user_name, create_time)
+        select task_id,question.id,question.answer,question_fraction,student.id,student.username,now() from task_user_link tl
+        inner join question on tl.question_id = question.id inner join student on student.id=#{userId}
+        where task_id=#{taskId}
+    </insert>
+
+    <select id="queryIdByPaperId" resultType="java.lang.Integer">
+        select id from task_test where task_id =#{paperId}
+    </select>
+
+    <select id="queryListById" resultType="com.atguigu.eduservice.entity.TaskTest">
+        select id , answer ,question_answer titleAnswer ,question_fraction titleFraction from task_test where
+        id IN
+        <foreach collection="ids" open="(" separator="," close=")" item="id">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="queryPaperTestByUserIdAndPaperId" resultType="com.atguigu.eduservice.entity.TaskTest">
+        SELECT id ,title_id titleId ,user_id userId ,user_name userName ,answer FROM task_test
+        where task_id =#{paperId} and user_id=#{userId}
+    </select>
+
+    <select id="getQuestionById" resultType="com.atguigu.eduservice.entity.Question">
+        select * from question where question.id=#{titleId}
+    </select>
+</mapper>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.eduservice.mapper.TaskUserLinkMapper">
+
+    <resultMap id="baseQuestion" type="com.atguigu.eduservice.entity.Question">
+        <id column="id" property="id" />
+        <result column="question" property="question" />
+        <result column="choice" property="choice" />
+        <result column="analysis" property="analysis" />
+        <result column="address" property="address" />
+        <result column="knowl" property="knowl" />
+        <result column="answer" property="answer" />
+        <result column="type" property="type" />
+    </resultMap>
+
+    <resultMap id="paperQuestionResultMap" type="com.atguigu.eduservice.entity.vo.QuestionVO">
+        <id column="id" property="tulId" />
+        <result column="question_fraction" property="fraction" />
+        <result column="update_time" property="updateTime" />
+        <association column="question_id" property="question"
+        resultMap="baseQuestion" />
+    </resultMap>
+
+    <select id="queryByList" resultType="com.atguigu.eduservice.entity.TaskUserLink">
+        SELECT task_id taskId,question_id  questionId FROM task_user_link WHERE task_id=#{taskId}
+    </select>
+
+    <select id="queryPaperQuestionsByTeacher" resultMap="paperQuestionResultMap">
+        select * from task_user_link
+                          inner join question q on task_user_link.question_id = q.id
+        where task_id=#{taskId}
+    </select>
+
+    <insert id="saveTaskQuestionBookBatch" parameterType="java.util.List">
+        insert into task_user_link
+            (id,task_id,question_id,question_fraction,create_time,update_time)
+        values
+        <foreach collection="taskUserLinks" item="item" index="index" separator=",">
+        (#{item.id},#{item.taskId},#{item.questionId},#{item.questionFraction},#{item.createTime},#{item.updateTime})
+        </foreach>
+    </insert>
+</mapper>

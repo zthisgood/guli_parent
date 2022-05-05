@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.eduservice.mapper.QuestionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.atguigu.eduservice.entity.Question">
+        <id column="id" property="id" />
+        <result column="question" property="question" />
+        <result column="analysis" property="analysis" />
+        <result column="address" property="address" />
+        <result column="type" property="type" />
+        <result column="knowl" property="knowl" />
+        <result column="choice" property="choice" />
+        <result column="answer" property="answer" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, question, analysis, address, type, knowl, choice, answer
+    </sql>
+
+    <select id="getFillQuestionList" resultType="java.lang.Integer">
+        select id from question where type=0
+    </select>
+
+    <select id="getMultiQuestionList" resultType="java.lang.Integer">
+        select id from question where type=1
+    </select>
+
+    <select id="querySomeTitleByKnowledge" resultMap="BaseResultMap">
+        select * from question where knowl like concat('%',#{knowledge},'%')
+    </select>
+
+    <select id="queryUserKnowledge" resultType="java.lang.String">
+        select distinct knowl from task_test left join question q on task_test.title_id = q.id
+        where user_id=#{userId}
+    </select>
+</mapper>

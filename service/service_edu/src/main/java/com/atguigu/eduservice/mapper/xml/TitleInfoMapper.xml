@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.eduservice.mapper.TitleInfoMapper">
+<sql id="baseCondition">
+    <where>
+        <if test="keyWords!=null and keyWords!=''">
+        (b.subject_name like concat('%',#{keyWords},'%')
+        or c.class_name like concat('%',#{keyWords},'%')
+        or a.user_name like concat('%',#{keyWords},'%')
+        )
+        </if>
+        <if test="subjectName!=null and subjectName!=''">
+            b.subject_name =#{subjectName}
+        </if>
+        <if test="titleName!=null and titleName!=''">
+            a.title_name =#{titleName}
+        </if>
+        <if test="className!=null and className!=''">
+            c.class_name =#{className}
+        </if>
+        <if test="titleType!='' and titleType!=null ">
+            a.title_type =#{titleType}
+        </if>
+        <if test="titleFraction!='' and titleFraction!=null ">
+            a.title_fraction =#{titleFraction}
+        </if>
+    </where>
+</sql>
+
+
+
+    <select id="queryPage" resultType="com.atguigu.eduservice.entity.vo.TitleVO" parameterType="com.atguigu.eduservice.entity.query.TitlePageQuery">
+        select  a.title_id  titleId, a.title_name  titleName, a.title_type titleType, a.title_fraction titleFraction , a.title_answer  titleAnswer, a.title_status titleStatus,
+         a.choice1 , a.choice2, a.choice3, a.choice4,
+         a.user_id userId, a.user_name userName, a.create_time createTime
+          from question_info a
+          <include refid="baseCondition"></include>
+    </select>
+
+</mapper>

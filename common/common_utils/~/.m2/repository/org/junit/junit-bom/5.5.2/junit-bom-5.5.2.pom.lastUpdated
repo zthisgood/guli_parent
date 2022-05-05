@@ -1,0 +1,5 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Wed Dec 15 17:41:25 CST 2021
+https\://repos.bollo.top/repository/caf-repo/.error=Could not transfer artifact org.junit\:junit-bom\:pom\:5.5.2 from/to caf-repo (https\://repos.bollo.top/repository/caf-repo/)\: Transfer failed for https\://repos.bollo.top/repository/caf-repo/org/junit/junit-bom/5.5.2/junit-bom-5.5.2.pom
+https\://repo.maven.apache.org/maven2/.lastUpdated=1639561285072
+0c064b69daddcd0cec9022683862099c64d5a3ca@default-caf-repo-https\://repos.bollo.top/repository/caf-repo/.lastUpdated=1639561284419

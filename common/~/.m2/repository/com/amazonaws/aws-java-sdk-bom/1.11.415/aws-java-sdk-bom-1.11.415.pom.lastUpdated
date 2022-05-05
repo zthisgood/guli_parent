@@ -1,0 +1,5 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Wed Dec 15 17:34:16 CST 2021
+https\://repos.bollo.top/repository/caf-repo/.error=Could not transfer artifact com.amazonaws\:aws-java-sdk-bom\:pom\:1.11.415 from/to caf-repo (https\://repos.bollo.top/repository/caf-repo/)\: Transfer failed for https\://repos.bollo.top/repository/caf-repo/com/amazonaws/aws-java-sdk-bom/1.11.415/aws-java-sdk-bom-1.11.415.pom
+https\://repo.maven.apache.org/maven2/.lastUpdated=1639560856285
+0c064b69daddcd0cec9022683862099c64d5a3ca@default-caf-repo-https\://repos.bollo.top/repository/caf-repo/.lastUpdated=1639560639721

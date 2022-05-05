@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atgui.eduneo4j.mapper.EntityRelationMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.atgui.eduneo4j.entity.EntityRelation">
+        <id column="id" property="id" />
+        <result column="entity1" property="entity1" />
+        <result column="entity2" property="entity2" />
+        <result column="relation_id" property="relationId" />
+        <result column="note" property="note" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, entity1, entity2, relation_id, note
+    </sql>
+
+</mapper>

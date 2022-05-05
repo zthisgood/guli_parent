@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.eduservice.mapper.TaskUserMapper">
+
+
+    <select id="queryPaper" resultType="com.atguigu.eduservice.entity.TaskUser" parameterType="com.atguigu.eduservice.entity.TaskUser">
+        select id from task_user where task_id=#{paperId} and user_id =#{userId} and status=0
+    </select>
+
+
+
+    <sql id="baseCondition">
+        <where>
+            <if test="keyWords!=null and keyWords!=''">
+                (a.fraction like concat('%',#{keyWords},'%')
+                or b.paper_name like concat('%',#{keyWords},'%')
+                or c.user_name like concat('%',#{keyWords},'%')
+                or d.class_name like concat('%',#{keyWords},'%')
+                or b.paper_score like concat('%',#{keyWords},'%')
+                )
+            </if>
+            <if test="className!=null and className!=''">
+                and d.class_name =#{className}
+            </if>
+            <if test="userName!=null and userName!=''">
+                and c.user_name =#{userName}
+            </if>
+            <if test="paperName!=null and paperName!=''">
+                and b.paper_name =#{paperName}
+            </if>
+            <if test="paperId!=null">
+                and b.paper_id =#{paperId}
+            </if>
+            <if test="classId!=null">
+                and d.class_id =#{classId}
+            </if>
+
+        </where>
+    </sql>
+
+    <select id="queryPaperList" resultType="java.util.HashMap">
+        select
+        tu.id taskUserId,tu.task_id taskId,tu.fraction paperFraction,ti.teach_name teachName,
+               ti.task_name taskName,student.username uname,tu.user_id userId,tu.status paperStatus
+        from task_user tu
+        inner join task_info ti on tu.task_id = ti.task_id right join student on student.id=tu.user_id
+    </select>
+</mapper>
